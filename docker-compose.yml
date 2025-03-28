@@ -1,0 +1,40 @@
+services:
+  db:
+    image: postgres:17.4-alpine3.21
+    hostname: pj_mdpi_db
+    env_file: ".env"
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
+      PGDATA: /var/lib/postgresql/data
+    volumes:
+      - pj-mdpi-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - pj-mdpi-network
+
+  api:
+    build:
+      context: .
+      dockerfile: ./dockerfiles/api/Dockerfile
+    hostname: pj_mdpi_api
+    environment:
+      PYTHONPATH: /workspace/app
+    volumes:
+      - ./src:/workspace/app
+    working_dir: /workspace
+    ports:
+      - "8000:8000"
+    command: fastapi run app/main.py --port 8000 --reload
+    networks:
+      - pj-mdpi-network
+
+networks:
+  pj-mdpi-network:
+    name: pj_mdpi_network
+
+volumes:
+  pj-mdpi-data:
+    external: false

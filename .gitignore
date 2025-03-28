@@ -1,0 +1,7 @@
+.idea/
+.venv
+.ruff_cache/
+poetry.lock
+__pycache__/
+*.py[cod]
+*$py.class
