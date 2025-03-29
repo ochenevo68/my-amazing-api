@@ -9,6 +9,7 @@ services:
       POSTGRES_PASSWORD: ${DB_PASS}
       PGDATA: /var/lib/postgresql/data
     volumes:
+      - ./dockerfiles/db/initdb.d:/docker-entrypoint-initdb.d
       - pj-mdpi-data:/var/lib/postgresql/data
     ports:
       - "5432:5432"

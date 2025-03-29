@@ -17,10 +17,13 @@ check:
 	poetry run python -m ruff check src
 
 start:
-	@echo "== Start  =="
+	@echo "== Start API =="
 	docker compose up -d
 
 stop:
-	@echo "== Stop =="
+	@echo "== Stop API =="
 	docker compose down
+
+dbclient:
+	docker compose exec db bash -c "psql -U docker pj_mdpi"
 

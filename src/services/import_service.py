@@ -2,11 +2,15 @@ from external.restcountries import get_data
 
 import polars as pl
 
+from repositories.countries_repository import CountriesRepository
+
 
 class ImportService:
-    @staticmethod
-    async def import_data():
-        data: list[dict] = await get_data()
+    def __init__(self, repository: CountriesRepository):
+        self._repository = repository
+
+    async def import_data(self) -> int:
+        data = await get_data()
 
         wanted_columns = [
             pl.col("cca3").alias("code"),
@@ -15,8 +19,8 @@ class ImportService:
             "population",
         ]
 
-        df = pl.DataFrame(data).select(wanted_columns)
+        country_infos = pl.DataFrame(data).select(wanted_columns)
 
-        print(df)
+        imported_count = self._repository.bulk_import(country_infos.to_dicts())
 
-        return len(data)
+        return imported_count
