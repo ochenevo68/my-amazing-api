@@ -1,13 +1,13 @@
 from abc import ABC, abstractmethod
 from typing import Any
 
-from schemas.countries import CountryInfo, PartialCountryInfo
+from schemas.countries import CountryInfo
 
 
 class CountriesRepository(ABC):
     @abstractmethod
     def bulk_import(self, country_infos: list[dict[str, Any]]) -> int:
-        pass
+        raise NotImplementedError()
 
     @abstractmethod
     def create(self, country_info: CountryInfo) -> int:

@@ -32,6 +32,36 @@ services:
     networks:
       - pj-mdpi-network
 
+  db-test:
+    image: postgres:17.4-alpine3.21
+    hostname: pj_mdpi_db_test
+    env_file: ".env"
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
+    volumes:
+      - ./dockerfiles/db/initdb.d:/docker-entrypoint-initdb.d
+    ports:
+      - "5433:5432"
+    networks:
+      - pj-mdpi-network
+
+  test:
+    build:
+      context: .
+      dockerfile: ./dockerfiles/api/Dockerfile
+    hostname: pj_mdpi_test
+    environment:
+      PYTHONPATH: /workspace/app:/workspace/tests
+    volumes:
+      - ./src:/workspace/app
+      - ./tests:/workspace/tests
+    working_dir: /workspace
+    command: python -m pytest tests/ -s
+    networks:
+      - pj-mdpi-network
+
 networks:
   pj-mdpi-network:
     name: pj_mdpi_network

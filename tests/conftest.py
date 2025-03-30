@@ -1,32 +1,33 @@
-from fastapi import Depends
+import pytest
+from sqlalchemy import insert, text
 from sqlalchemy.orm import Session
 
 from database import DatabaseConfig, DatabaseSessionFactory
-from external import RestcountriesDataSource
-from repositories.sqlalchemy_countries_repository import SqlAlchemyCountriesRepository
+from models.dat_country import DatCountry
+from tests import COUNTRY_ALREADY_IN_DB
 
 
-def get_db_session():
+def reset_db(session: Session):
+    session.execute(text("TRUNCATE TABLE dat_country"))
+    session.execute(insert(DatCountry).values(**COUNTRY_ALREADY_IN_DB.__dict__))
+    session.commit()
+
+
+@pytest.fixture(scope="function")
+def db_session_test():
     session_factory = DatabaseSessionFactory(
         DatabaseConfig(
             db_type="postgresql",
             user="docker",
             password="docker",
-            host="pj_mdpi_db",
+            host="pj_mdpi_db_test",
             port=5432,
             db_name="pj_mdpi",
         )
     )
     session = session_factory.get_session()
+    reset_db(session)
     try:
         yield session
     finally:
         session.close()
-
-
-def get_countries_repository(db_session: Session = Depends(get_db_session)):
-    return SqlAlchemyCountriesRepository(db_session=db_session)
-
-
-def get_data_source():
-    return RestcountriesDataSource()

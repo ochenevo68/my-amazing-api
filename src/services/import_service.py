@@ -1,16 +1,16 @@
-from external.restcountries import get_data
-
 import polars as pl
 
+from external import DataSource
 from repositories.countries_repository import CountriesRepository
 
 
 class ImportService:
-    def __init__(self, repository: CountriesRepository):
+    def __init__(self, repository: CountriesRepository, data_source: DataSource):
         self._repository = repository
+        self._data_source = data_source
 
     async def import_data(self) -> int:
-        data = await get_data()
+        data = await self._data_source.get_data()
 
         wanted_columns = [
             pl.col("cca3").alias("code"),

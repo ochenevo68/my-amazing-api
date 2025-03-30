@@ -1,5 +1,4 @@
 from enum import Enum, auto
-from typing import Optional
 
 from exceptions import CountryAlreadyExistsException
 from repositories.countries_repository import CountriesRepository

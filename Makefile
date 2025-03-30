@@ -10,20 +10,28 @@ rebuild:
 
 format:
 	@echo "== Format code =="
-	poetry run python -m ruff format src
+	poetry run python -m ruff format src tests
 
 check:
 	@echo "== Check code =="
-	poetry run python -m ruff check src
+	poetry run python -m ruff check src tests
+
+check-fix:
+	@echo "== Check code and fix =="
+	poetry run python -m ruff check --select I --fix src tests
 
 start:
-	@echo "== Start API =="
-	docker compose up -d
+	@echo "== Start DB and API =="
+	docker compose up -d db api
 
 stop:
-	@echo "== Stop API =="
+	@echo "== Stop all =="
 	docker compose down
+
+test:
+	@echo "== Run tests =="
+	docker compose up -d db-test
+	docker compose up test
 
 dbclient:
 	docker compose exec db bash -c "psql -U docker pj_mdpi"
-
