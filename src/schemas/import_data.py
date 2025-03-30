@@ -1,8 +1,8 @@
 from typing import Any
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 
 class ImportResult(BaseModel):
-    status: str = Field("success")
-    data: dict[str, Any] = Field(...)
+    status: str = "success"
+    data: dict[str, Any]

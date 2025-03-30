@@ -1,9 +1,7 @@
 from sqlalchemy import BigInteger, String
-from sqlalchemy.orm import DeclarativeBase, mapped_column
+from sqlalchemy.orm import mapped_column
 
-
-class BaseModel(DeclarativeBase):
-    pass
+from models import BaseModel
 
 
 class DatCountry(BaseModel):

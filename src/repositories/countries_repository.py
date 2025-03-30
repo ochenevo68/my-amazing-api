@@ -22,7 +22,7 @@ class CountriesRepository(ABC):
         raise NotImplementedError()
 
     @abstractmethod
-    def update(self, country_code: str, country_info: PartialCountryInfo) -> int:
+    def update(self, country_code: str, country_info: dict[str, Any]) -> int:
         raise NotImplementedError()
 
     @abstractmethod
