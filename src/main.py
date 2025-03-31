@@ -1,6 +1,6 @@
 from fastapi import FastAPI
-from api.v1 import countries, import_data
 
+from api.v1 import countries, import_data
 
 app = FastAPI()
 

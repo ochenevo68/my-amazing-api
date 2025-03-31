@@ -5,11 +5,24 @@ from repositories.countries_repository import CountriesRepository
 
 
 class ImportService:
+    """Service responsible for data import."""
+
     def __init__(self, repository: CountriesRepository, data_source: DataSource):
+        """Initialize the instance with a CountriesRepository and a DataSource.
+
+        Args:
+            repository: The CountriesRepository to use for internal data storage.
+            data_source: The DataSource to get the data from.
+        """
         self._repository = repository
         self._data_source = data_source
 
     async def import_data(self) -> int:
+        """Import data from the DataSource into the internal storage.
+
+        Returns:
+            The number of data records (rows) imported.
+        """
         data = await self._data_source.get_data()
 
         wanted_columns = [

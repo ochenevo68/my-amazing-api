@@ -33,5 +33,9 @@ test:
 	docker compose up -d db-test
 	docker compose up test
 
+doc:
+	@echo "== Generate doc =="
+	poetry run python -m mkdocs build
+
 dbclient:
 	docker compose exec db bash -c "psql -U docker pj_mdpi"

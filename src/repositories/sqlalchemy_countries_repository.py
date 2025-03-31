@@ -4,6 +4,7 @@ from sqlalchemy import delete, select, update
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
+from typing_extensions import override
 
 from exceptions import CountryAlreadyExistsException
 from models.dat_country import DatCountry
@@ -12,9 +13,17 @@ from schemas.countries import CountryInfo
 
 
 class SqlAlchemyCountriesRepository(CountriesRepository):
+    """SQLAlchemy implementation of a CountriesRepository."""
+
     def __init__(self, db_session: Session):
+        """Initialize the instance with given parameters.
+
+        Args:
+            db_session: The database session to use.
+        """
         self._session = db_session
 
+    @override
     def bulk_import(self, country_infos: list[dict[str, Any]]) -> int:
         insert_stmt = insert(DatCountry).on_conflict_do_nothing()
 
@@ -28,6 +37,7 @@ class SqlAlchemyCountriesRepository(CountriesRepository):
 
         return len(country_infos)
 
+    @override
     def create(self, country_info: CountryInfo) -> int:
         insert_stmt = insert(DatCountry).values(**country_info.__dict__)
 
@@ -48,11 +58,13 @@ class SqlAlchemyCountriesRepository(CountriesRepository):
 
         return inserted_row_count
 
+    @override
     def list(self) -> list[str]:
         stmt = select(DatCountry.code).order_by(DatCountry.code)
         result = self._session.execute(stmt).all()
         return [row._mapping["code"] for row in result]
 
+    @override
     def get(self, country_code: str) -> CountryInfo | None:
         stmt = select(DatCountry).where(DatCountry.code == country_code)
         result = self._session.execute(stmt).scalar()
@@ -67,6 +79,7 @@ class SqlAlchemyCountriesRepository(CountriesRepository):
             )
         )
 
+    @override
     def update(self, country_code: str, updates: dict[str, Any]) -> int:
         stmt = (
             update(DatCountry).where(DatCountry.code == country_code).values(**updates)
@@ -86,6 +99,7 @@ class SqlAlchemyCountriesRepository(CountriesRepository):
 
         return updated_row_count
 
+    @override
     def delete(self, country_code: str) -> int:
         delete_stmt = delete(DatCountry).where(DatCountry.code == country_code)
 

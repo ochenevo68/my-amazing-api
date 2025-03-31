@@ -1,0 +1,119 @@
+site_name: "my-amazing-api"
+site_description: "Automatic documentation"
+site_dir: "site"
+site_url: ""
+use_directory_urls: false
+
+repo_url: "https://github.com/ochenevo68/my-amazing-api"
+repo_name: "ochenevo68/my-amazing-api"
+
+nav:
+  - Home: index.md
+  - Usage: usage.md
+  - API Reference:
+    - API endpoints: api.md
+    - Database: database.md
+    - Dependencies: dependencies.md
+    - Exceptions: exceptions.md
+    - External: external.md
+    - Models: models.md
+    - Repositories: repositories.md
+    - Schemas: schemas.md
+    - Services: services.md
+
+theme:
+  name: material
+  features:
+    - announce.dismiss
+    - content.action.edit
+    - content.action.view
+    - content.code.annotate
+    - content.code.copy
+    - content.tooltips
+    - navigation.footer
+    - navigation.sections
+    - navigation.tabs
+    - navigation.top
+    - search.highlight
+    - search.suggest
+    - toc.follow
+  palette:
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: teal
+      accent: purple
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: black
+      accent: lime
+      toggle:
+        icon: material/weather-night
+        name: Switch to system preference
+  font:
+    text: Roboto
+    code: Roboto Mono
+  favicon: assets/favicon.png
+  icon:
+    logo: logo
+
+markdown_extensions:
+  - attr_list
+  - admonition
+  - footnotes
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:
+      pygments_lang_class: true
+  - pymdownx.magiclink
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+      slugify: !!python/object/apply:pymdownx.slugs.slugify
+        kwds:
+          case: lower
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+  - toc:
+      permalink: "¤"
+
+plugins:
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
+          options:
+            docstring_options:
+              ignore_init_summary: true
+            docstring_section_style: list
+            filters: ["!^_"]
+            heading_level: 1
+            inherited_members: true
+            merge_init_into_class: true
+            parameter_headings: true
+            separate_signature: true
+            show_root_heading: true
+            show_root_full_path: false
+            show_signature_annotations: true
+            show_source: false
+            show_symbol_type_heading: true
+            show_symbol_type_toc: true
+            signature_crossrefs: true
+            summary: true
+#  - search
+
+extra:
+  social:
+  - icon: fontawesome/brands/github
+    link: https://github.com/ochenevo68
+
