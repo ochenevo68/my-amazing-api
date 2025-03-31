@@ -1,3 +1,7 @@
+import os
+from typing import Optional
+
+from dotenv import load_dotenv
 from sqlalchemy import Engine, create_engine
 from sqlalchemy.orm import Session, scoped_session, sessionmaker
 
@@ -6,7 +10,13 @@ class DatabaseConfig:
     """Holds info for connection to database."""
 
     def __init__(
-        self, db_type: str, user: str, password: str, host: str, port: int, db_name: str
+        self,
+        db_type: str = "postgresql",
+        user: Optional[str] = None,
+        password: Optional[str] = None,
+        host: Optional[str] = None,
+        port: Optional[int] = None,
+        db_name: Optional[str] = None,
     ):
         """Initialize the instance with specified parameters.
 
@@ -18,12 +28,15 @@ class DatabaseConfig:
             port: The port the database server is listening on.
             db_name: The name of the logical database to use.
         """
+        dotenv_path = os.path.join(os.getcwd(), ".env")
+        load_dotenv(dotenv_path)
+
         self._db_type = db_type
-        self._user = user
-        self._password = password
-        self._host = host
-        self._port = port
-        self._db_name = db_name
+        self._user = user if user else os.environ.get("DB_USER")
+        self._password = password if password else os.environ.get("DB_PASS")
+        self._host = host if host else os.environ.get("DB_HOST")
+        self._port = port if port else int(os.environ.get("DB_PORT"))
+        self._db_name = db_name if db_name else os.environ.get("DB_NAME")
 
     def get_url(self) -> str:
         """Get a database connection URL.

@@ -13,6 +13,7 @@ dependencies = [
     "polars (>=1.26.0,<2.0.0)",
     "sqlalchemy (>=2.0.40,<3.0.0)",
     "psycopg2 (>=2.9.10,<3.0.0)",
+    "python-dotenv (>=1.1.0,<2.0.0)",
     "pytest (>=8.3.5,<9.0.0)",
     "pytest-asyncio (>=0.26.0,<0.27.0)",
 ]

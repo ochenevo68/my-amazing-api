@@ -17,12 +17,7 @@ def reset_db(session: Session):
 def db_session_test():
     session_factory = DatabaseSessionFactory(
         DatabaseConfig(
-            db_type="postgresql",
-            user="docker",
-            password="docker",
             host="pj_mdpi_db_test",
-            port=5432,
-            db_name="pj_mdpi",
         )
     )
     session = session_factory.get_session()

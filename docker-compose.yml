@@ -1,7 +1,7 @@
 services:
   db:
     image: postgres:17.4-alpine3.21
-    hostname: pj_mdpi_db
+    hostname: ${DB_HOST}
     env_file: ".env"
     environment:
       POSTGRES_DB: ${DB_NAME}
@@ -12,7 +12,7 @@ services:
       - ./dockerfiles/db/initdb.d:/docker-entrypoint-initdb.d
       - pj-mdpi-data:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - "5432:${DB_PORT}"
     networks:
       - pj-mdpi-network
 
@@ -34,7 +34,7 @@ services:
 
   db-test:
     image: postgres:17.4-alpine3.21
-    hostname: pj_mdpi_db_test
+    hostname: ${DB_HOST}_test
     env_file: ".env"
     environment:
       POSTGRES_DB: ${DB_NAME}
@@ -43,7 +43,7 @@ services:
     volumes:
       - ./dockerfiles/db/initdb.d:/docker-entrypoint-initdb.d
     ports:
-      - "5433:5432"
+      - "5433:${DB_PORT}"
     networks:
       - pj-mdpi-network
 

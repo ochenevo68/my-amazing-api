@@ -16,16 +16,7 @@ def get_db_session() -> Generator[Session, Any, None]:
     Returns:
         A session to the database.
     """
-    session_factory = DatabaseSessionFactory(
-        DatabaseConfig(
-            db_type="postgresql",
-            user="docker",
-            password="docker",
-            host="pj_mdpi_db",
-            port=5432,
-            db_name="pj_mdpi",
-        )
-    )
+    session_factory = DatabaseSessionFactory(DatabaseConfig())
     session = session_factory.get_session()
     try:
         yield session
