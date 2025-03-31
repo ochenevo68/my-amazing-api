@@ -3,6 +3,7 @@
 setup:
 	@echo "== Setup environment =="
 	poetry config virtualenvs.in-project true && poetry install
+	poetry run pre-commit install
 
 rebuild:
 	@echo "== Rebuild image =="
